@@ -6,7 +6,6 @@ import fetch from 'node-fetch'
 async function test() {
     const { stdout: newReleaseTags } = await exec('git describe --tags')
     const newReleaseTag =  newReleaseTags.replace('\n', '')
-    const { stdout: oldReleaseTag } = await exec(`git tag | grep -B1 ${newReleaseTag} | head -1`)
     const { stdout: changeLog } = await exec(`git log`)
     const actualChangeLogs = changeLog.replace('\n', '<br>')
     const { stdout: lastTagInfo } = await exec(`git show ${newReleaseTag}`)
