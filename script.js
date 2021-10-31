@@ -31,8 +31,8 @@ async function test() {
         body: JSON.stringify(createJson),
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'OAuth AQAAAAA74JZXAAd4ycKPSFr9UET4qtCw3Dhubj8',
-            'X-Org-ID': '6461097'
+            'Authorization': `OAuth ${process.env.API_TOKEN}`,
+            'X-Org-ID': process.env.API_ID
         }
     })
 }
