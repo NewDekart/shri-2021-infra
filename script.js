@@ -7,7 +7,7 @@ async function test() {
     const { stdout: newReleaseTags } = await exec('git describe --tags')
     const newReleaseTag =  newReleaseTags.replace('\n', '')
     const { stdout: oldReleaseTag } = await exec(`git tag | grep -B1 ${newReleaseTag} | head -1`)
-    const { stdout: changeLog } = await exec(`git log ${newReleaseTag}...${oldReleaseTag.replace('\n', '')} --oneline`)
+    const { stdout: changeLog } = await exec(`git log ${newReleaseTag}...${oldReleaseTag.replace('\n', '')}`)
     const actualChangeLogs = changeLog.replace('\n', '<br>')
     const { stdout: lastTagInfo } = await exec(`git show ${newReleaseTag}`)
     const author = lastTagInfo.match(/Author:(.+)\n/).at(1).trim()
@@ -23,6 +23,8 @@ async function test() {
                 Author:&nbsp;${author}<br>
                 Date:&nbsp;${date}<br><br>
                 Changelog:<br><br>${actualChangeLogs}
+                newRelease:${newReleaseTag}<br>
+                oldRelease:${oldReleaseTag}
             </body>
         </html>#>`
     }
