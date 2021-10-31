@@ -20,17 +20,20 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
+
       - uses: actions/setup-node@v1
         name: 'setup node'
         with:
           node-version: '16.10.0'
-          
+
       - name: 'install'
         run: npm i
-        
+
+      -name: 'tags'
+        run: npm run tags
+
       - name: Set release info in tracker
         run: npm run ticket
-        env: 
+        env:
           API_TOKEN: ${{ secrets.TRACKER_TOKEN }}
           API_ID: ${{ secrets.TRACKER_ORG_ID }}
