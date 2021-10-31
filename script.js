@@ -22,7 +22,7 @@ async function test() {
                 Release:&nbsp;${newReleaseTag}<br>
                 Author:&nbsp;${author}<br>
                 Date:&nbsp;${date}<br><br>
-                Changelog:<br><br>${actualChangeLogs}
+                Changelog:<br><br>${actualChangeLogs}<br>
                 newRelease:${newReleaseTag}<br>
                 oldRelease:${oldReleaseTag}
             </body>
