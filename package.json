@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "npx http-server",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "ticket": "node ./ticket.js",
     "tags": "git fetch --tags",
-    "docker": "node ./docker.js"
+    "docker": "node ./docker.js",
+    "releaseTest": "node ./tests.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "node-fetch": "^3.0.0"
   },
   "devDependencies": {
+    "jest": "^27.3.1",
     "simple-git": "^2.47.0"
   },
   "type": "module"
