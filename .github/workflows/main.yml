@@ -39,10 +39,16 @@ jobs:
         env:
           API_TOKEN: ${{ secrets.TRACKER_TOKEN }}
           API_ID: ${{ secrets.TRACKER_ORG_ID }}
-          
+
+      - name: Set tests info in tracker
+        run: npm run releaseTest
+        env:
+          API_TOKEN: ${{ secrets.TRACKER_TOKEN }}
+          API_ID: ${{ secrets.TRACKER_ORG_ID }}
+
       - uses: docker-practice/actions-setup-docker@master
         name: 'setup docker'
-      
+
       - name: 'create docker image'
         run: npm run docker
         env:
