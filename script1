@@ -1,1 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+NEW_RELEASE_TAG=$(git describe HEAD --tags)
+PREVIOS_RELEASE_TAG=$(git tag | grep -B1 $NEW_RELEASE_TAG | head -1)
+CHANGE_LOG=$(git log $NEW_RELEASE_TAG...$PREVIOS_RELEASE_TAG)
+RELEASE_DATE=$(git show $NEW_RELEASE_TAG | grep Date)
+RELEASE_AUTHOR=$(git show $NEW_RELEASE_TAG | grep Author)
+CREATE_JSON="{\"queue\": \"TMP\", \"summary\": \"Dekart hw8 ${NEW_RELEASE_TAG}\", \"type\": \"task\"}"
+FIND_JSON="{\"filter\": {\"summary\": \"Dekart hw8 ${NEW_RELEASE_TAG}\", \"queue\": \"TMP\"} }"
+CURRENT_RELEASE_TICKET=$(curl -X POST https://api.tracker.yandex.net/v2/issues/_search -H 'Content-Type: application/json' -H 'Authorization: OAuth AQAAAAA74JZXAAd4ycKPSFr9UET4qtCw3Dhubj8' -H 'X-Org-ID: 6461097' -d "${FIND_JSON}")
+
+if [ $CURRENT_RELEASE_TICKET == "[]" ]; then
+    curl -X POST https://api.tracker.yandex.net/v2/issues/ -H 'Content-Type: application/json' -H 'Authorization: OAuth AQAAAAA74JZXAAd4ycKPSFr9UET4qtCw3Dhubj8' -H 'X-Org-ID: 6461097' -d "${CREATE_JSON}"
+else
+    echo "exist"
+fi
