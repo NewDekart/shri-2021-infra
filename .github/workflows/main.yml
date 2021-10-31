@@ -39,3 +39,12 @@ jobs:
         env:
           API_TOKEN: ${{ secrets.TRACKER_TOKEN }}
           API_ID: ${{ secrets.TRACKER_ORG_ID }}
+          
+      - uses: docker-practice/actions-setup-docker@master
+        name: 'setup docker'
+      
+      - name: 'create docker image'
+        run: npm run docker
+        env:
+          API_TOKEN: ${{ secrets.TRACKER_TOKEN }}
+          API_ID: ${{ secrets.TRACKER_ORG_ID }}
