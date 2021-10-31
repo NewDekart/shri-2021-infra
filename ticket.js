@@ -3,7 +3,7 @@ import { exec as syncExec } from 'child_process';
 const exec = util.promisify(syncExec);
 import fetch from 'node-fetch'
 
-async function test() {
+async function ticket() {
     const { stdout: newReleaseTags } = await exec('git describe --tags')
     const newReleaseTag =  newReleaseTags.replace('\n', '')
     const { stdout: oldReleaseTag } = await exec(`git tag | grep -B1 ${newReleaseTag} | head -1`)
@@ -37,4 +37,4 @@ async function test() {
     })
 }
 
-test()
+ticket()

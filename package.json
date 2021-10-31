@@ -6,8 +6,9 @@
   "scripts": {
     "start": "npx http-server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ticket": "node ./script.js",
-    "tags": "git fetch --tags"
+    "ticket": "node ./ticket.js",
+    "tags": "git fetch --tags",
+    "docker": "node ./docker.js"
   },
   "repository": {
     "type": "git",
