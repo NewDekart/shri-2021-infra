@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npx http-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ticket": "node ./script.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,11 @@
   },
   "homepage": "https://github.com/NewDekart/shri-2021-infra#readme",
   "dependencies": {
-    "http-server": "^14.0.0"
-  }
+    "http-server": "^14.0.0",
+    "node-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "simple-git": "^2.47.0"
+  },
+  "type": "module"
 }
