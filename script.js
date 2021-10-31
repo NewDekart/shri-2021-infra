@@ -24,7 +24,6 @@ async function test() {
                 Date:&nbsp;${date}<br><br>
                 Changelog:<br><br>${actualChangeLogs}<br>
                 newRelease:${newReleaseTag}<br>
-                oldRelease:${oldReleaseTag}
             </body>
         </html>#>`
     }
