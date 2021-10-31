@@ -4,11 +4,10 @@ const exec = util.promisify(syncExec);
 import fetch from 'node-fetch'
 
 async function test() {
-    const { stdout: newReleaseTags } = await exec('git describe HEAD --tags')
+    const { stdout: newReleaseTags } = await exec('git describe --tags')
     const newReleaseTag =  newReleaseTags.replace('\n', '')
-    const { stdout: otherReleasesTags } = await exec(`git tag | grep -B1 ${newReleaseTag}`)
-    const oldReleaseTag = otherReleasesTags.match(/.+/).at(0)
-    const { stdout: changeLog } = await exec(`git log ${newReleaseTag}...${oldReleaseTag} --oneline`)
+    const { stdout: oldReleaseTag } = await exec(`git tag | grep -B1 ${newReleaseTag} | head -1`)
+    const { stdout: changeLog } = await exec(`git log ${newReleaseTag}...${oldReleaseTag.replace('\n', '')} --oneline`)
     const actualChangeLogs = changeLog.replace('\n', '<br>')
     const { stdout: lastTagInfo } = await exec(`git show ${newReleaseTag}`)
     const author = lastTagInfo.match(/Author:(.+)\n/).at(1).trim()
