@@ -20,21 +20,17 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
+      
+      - uses: actions/setup-node@v1
+        name: 'setup node'
+        with:
+          node-version: '16.10.0'
+          
+      - name: 'install'
+        run: npm i
+        
       - name: Set release info in tracker
-        run: |
-          NEW_RELEASE_TAG=$(git describe HEAD --tags)
-          PREVIOS_RELEASE_TAG=$(git tag | grep -B1 $NEW_RELEASE_TAG | head -1)
-          CHANGE_LOG=$(git log $NEW_RELEASE_TAG...$PREVIOS_RELEASE_TAG)
-          RELEASE_DATE=$(git show $NEW_RELEASE_TAG | grep Date)
-          RELEASE_AUTHOR=$(git show $NEW_RELEASE_TAG | grep Author)
-          CREATE_JSON="{\"queue\": \"TMP\", \"summary\": \"Dekart hw8 ${NEW_RELEASE_TAG}\", \"type\": \"task\"}"
-          FIND_JSON="{\"filter\": {\"summary\": \"Dekart hw8 ${NEW_RELEASE_TAG}\", \"queue\": \"TMP\"} }"
-          CURRENT_RELEASE_TICKET=$(curl -X POST https://api.tracker.yandex.net/v2/issues/_search -H 'Content-Type: application/json' -H 'Authorization: OAuth ${{ secrets.TRACKER_TOKEN }}' -H 'X-Org-ID: ${{ secrets.TRACKER_ORG_ID }}' -d "${FIND_JSON}")
-
-          if [ $CURRENT_RELEASE_TICKET == "[]" ]; then
-            curl -X POST https://api.tracker.yandex.net/v2/issues/ -H 'Content-Type: application/json' -H 'Authorization: OAuth ${{ secrets.TRACKER_TOKEN }}' -H 'X-Org-ID: ${{ secrets.TRACKER_ORG_ID }}' -d "${CREATE_JSON}"
-          else
-            echo "exist"
-          fi
+        run: npm run ticket
+        env: 
+          API_TOKEN: ${{ secrets.TRACKER_TOKEN }}
+          API_ID: ${{ secrets.TRACKER_ORG_ID }}
