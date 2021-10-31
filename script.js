@@ -4,6 +4,7 @@ const exec = util.promisify(syncExec);
 import fetch from 'node-fetch'
 
 async function test() {
+    await exec('git fetch --tags')
     const { stdout: newReleaseTags } = await exec('git describe HEAD --tags')
     const newReleaseTag =  newReleaseTags.replace('\n', '')
     const { stdout: otherReleasesTags } = await exec(`git tag | grep -B1 ${newReleaseTag}`)
