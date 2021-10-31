@@ -5,7 +5,7 @@ import fetch from 'node-fetch'
 
 async function ticket() {
     const { stdout: newReleaseTags } = await exec('git describe --tags')
-    const newReleaseTag =  newReleaseTags.replace('\n', '')
+    const newReleaseTag = newReleaseTags.replace('\n', '')
     const { stdout: oldReleaseTag } = await exec(`git tag | grep -B1 ${newReleaseTag} | head -1`)
     const { stdout: changeLog } = await exec(`git log ${newReleaseTag}...${oldReleaseTag.replace('\n', '')} --oneline`)
     const actualChangeLogs = changeLog.replace('\n', '<br>')
@@ -26,15 +26,49 @@ async function ticket() {
             </body>
         </html>#>`
     }
-    await fetch('https://api.tracker.yandex.net/v2/issues/', {
+
+    const findJson = {
+        filter: {
+            queue: "TMP",
+            summary: `Dekart hw8 ${newReleaseTag}`,
+        }
+    }
+    const find = await fetch('https://api.tracker.yandex.net/v2/issues/_search', {
         method: 'POST',
-        body: JSON.stringify(createJson),
+        body: JSON.stringify(findJson),
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `OAuth ${process.env.API_TOKEN}`,
             'X-Org-ID': process.env.API_ID
         }
     })
+
+    const response = await find.json()
+    const ticketId = response?.at(0)?.id
+
+    if (ticketId) {
+        await fetch(`https://api.tracker.yandex.net/v2/issues/${ticketId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                description: createJson.description
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `OAuth ${process.env.API_TOKEN}`,
+                'X-Org-ID': process.env.API_ID
+            }
+        })
+    } else {
+        await fetch('https://api.tracker.yandex.net/v2/issues/', {
+            method: 'POST',
+            body: JSON.stringify(createJson),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `OAuth ${process.env.API_TOKEN}`,
+                'X-Org-ID': process.env.API_ID
+            }
+        })
+    }
 }
 
 ticket()
