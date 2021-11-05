@@ -7,7 +7,7 @@
     "start": "npx http-server",
     "test": "jest",
     "ticket": "node ./ticket.js",
-    "tags": "git fetch --tags",
+    "tags": "git fetch --tags -f",
     "docker": "node ./docker.js",
     "releaseTest": "node ./tests.js"
   },
